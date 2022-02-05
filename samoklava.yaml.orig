@@ -32,45 +32,64 @@ points:
       #   rotate: 5
       key.padding: ky
       columns:
-        outer:
-          stagger: 0 ky
-          spread: kx
-          key:
-            column_net: P21
         pinky:
           stagger: 0 ky
           spread: kx
           key:
             column_net: P20
         ring:
-          stagger: 0 ky
+          stagger: 0.7 ky
           spread: kx
           key:
             column_net: P19
         middle:
-          stagger: 0 ky
+          stagger: 0.2 ky
           spread: kx
           key:
             column_net: P18
         index:
-          stagger: 0 ky
+          stagger: -0.2 ky
           spread: kx
           key:
             column_net: P15
         inner:
-          stagger: 0 ky
+          stagger: -0.1 ky
           spread: kx
           key:
             column_net: P14
       rows:
-        thumb:
-          row_net: P7
         bottom:
           row_net: P6
         home:
           row_net: P5
         top:
           row_net: P4
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-1.5 kx, -1 ky]
+      columns:
+        near:
+          spread: kx
+          rotate: -15
+          origin: [-0.5 kx, -0.5 ky]
+          key:
+            column_net: P18
+        home:
+          spread: kx
+          rotate: -15
+          origin: [-0.5 kx, -0.5 ky]
+          key:
+            column_net: P15
+        far:
+          spread: kx
+          rotate: -15
+          origin: [-0.5 kx, -0.5 ky]
+          key:
+            column_net: P14
+      rows:
+        thumb:
+          row_net: P7
 outlines:
   # board dimensions according to JLCPCB: 122.28 mm x 101.05 mm
   exports:
@@ -79,6 +98,21 @@ outlines:
         side: left
         size: [kx + px, ky + py]
         corner: px
+    thumbfan_glue:
+      - type: polygon
+        points:
+          - ref: matrix_inner_bottom
+            shift: [0.5 kx + 0.5px, -0.5 ky + 0.5 py]
+          - ref: thumbfan_far_thumb
+            shift: [0.5 kx - 0.5px, 0.5 ky + 0.5 py]
+          - ref: thumbfan_far_thumb
+            shift: [0.5 kx - 0.5px, -0.5 ky - 0.5 py]
+          - ref: thumbfan_near_thumb
+            shift: [-0.5 kx + 0.5 px, -0.5 ky - 0.5 py]
+          - ref: matrix_pinky_bottom
+            shift: [0.5 kx - 0.5 py, -0.5 ky - 0.5 py]
+          - ref: matrix_pinky_home
+          - ref: matrix_inner_home
     patch_outer:
       - type: polygon
         points:
@@ -131,6 +165,10 @@ outlines:
         type: outline
         name: patch_outer
         operation: add
+      thumbfan_glue:
+        type: outline
+        name: thumbfan_glue
+        operation: add
     base_outline:
       main:
         type: outline
@@ -164,6 +202,12 @@ outlines:
           - ref: matrix_index_bottom
             shift: [0, -1.06 ky]
         radius: 1.05
+      thumb:
+        type: circle
+        anchor:
+          - ref: thumbfan_far_thumb
+            shift: [-0.55 kx, 0]
+        radius: 1.05
     mounting_holes:
       $extends: outlines.exports.screw_holes
       top_left:
@@ -173,6 +217,8 @@ outlines:
       top_right:
         radius: 2.05
       palm:
+        radius: 2.05
+      thumb:
         radius: 2.05
     bottom_outline:
       main:
@@ -385,7 +431,7 @@ pcbs:
             - matrix_pinky_bottom
           shift: [0.75 kx, 0]
         params:
-          text: "davay v0.1\\nby finn-e"
+          text: "samoklava v0.1\\nby soundmonster"
           justify: left
       info_r:
         type: text
@@ -395,6 +441,6 @@ pcbs:
           shift: [0.75 kx, 0]
         params:
           layer: B.SilkS
-          text: "davay v0.1\\nby finn-e"
+          text: "samoklava v0.1\\nby soundmonster"
           justify: right mirror
 
